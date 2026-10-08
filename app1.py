@@ -1481,7 +1481,6 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
         "routes": route_rows if show_routes else [],
         "stops": stop_rows if show_stops else [],
     }
-    map_col, rail_col = st.columns([1.8, 1], gap="small")
     st.markdown("""
     <style>
     div[data-testid="stElementContainer"]:has(
