@@ -1483,6 +1483,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
     }
     map_col, rail_col = st.columns([1.8, 1], gap="small")
     with map_col:
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
         _MAP(payload=payload, key="map", default=None)
 
     GAP0 = 6                               # space Streamlit puts between stacked elements
