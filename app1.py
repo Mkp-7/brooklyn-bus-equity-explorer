@@ -16,7 +16,8 @@ import math
 import os
 import sys
 import zipfile
-from html import escape as esc
+import re
+from html import escape as esc, unescape
 from pathlib import Path
 
 import numpy as np
@@ -917,12 +918,15 @@ def pills(items):
 def row_html(rank, title, lines, value, value_sub="", bar=None, hint="", height=48, wrap_title=False, chips="", pad=6):
     """One ranked row: rank badge, name, detail lines and chips, a figure on the right, and an optional meter.
     The row is `height` pixels tall with `pad` pixels of breathing space around it, so a list can be spread to fill its panel."""
+    def _fit(text, base, limit):
+        n = len(unescape(re.sub(r"<[^>]+>", "", str(text))))
+        return base if n <= limit else max(base * 0.72, round(base * limit / n, 1))
     meter = f"<i class='mt'><s style='width:{max(0.0, min(100.0, bar)):.0f}%'></s></i>" if bar is not None else ""
-    body = "".join(f"<div class='ls'>{ln}</div>" for ln in lines)
+    body = "".join(f"<div class='ls' style='font-size:{_fit(ln, 11, 36)}px'>{ln}</div>" for ln in lines)
     cls = "lt wrap" if wrap_title else "lt"
     half = max(0, int(pad // 2))
     return (f"<div class='lw' style='padding:{half}px 0'><div class='lrow' style='height:{height}px' title='{esc(hint, quote=True)}'>"
-            f"<span class='rk'>{rank}</span><div class='lm'><div class='{cls}'>{title}</div>{body}<div class='pls'>{chips}</div></div>"
+            f"<span class='rk'>{rank}</span><div class='lm'><div class='{cls}' style='font-size:{_fit(title, 13, 24)}px'>{title}</div>{body}<div class='pls'>{chips}</div></div>"
             f"<div class='lv'><b>{value}</b><span>{value_sub}</span>{meter}</div></div></div>")
 
 
@@ -1040,7 +1044,8 @@ def main():
     /* page frame: tight padding so the whole view fits one small screen. The toolbar stays, because it holds the running indicator;
        only its menu and deploy button are hidden. */
     header[data-testid="stHeader"]{background:transparent;height:2rem}
-    #MainMenu,[data-testid="stMainMenu"],.stDeployButton,[data-testid="stAppDeployButton"],div[data-testid="stDecoration"],footer{display:none !important}
+    #MainMenu,[data-testid="stMainMenu"],.stDeployButton,[data-testid="stAppDeployButton"],div[data-testid="stDecoration"],footer,
+    [data-testid="stToolbarActions"],[data-testid="manage-app-button"],[class*="viewerBadge"],[class*="_profileContainer"]{display:none !important}
     [data-testid="stMainBlockContainer"],.block-container{padding:2.1rem .9rem .3rem .9rem !important;max-width:100% !important}
     /* Streamlit pulls the element after a markdown block up by 1rem to tidy paragraph spacing. Our blocks are custom HTML,
        so that pull made the banner, the list descriptions and the sidebar headings overlap what follows them. */
@@ -1093,7 +1098,7 @@ def main():
     .kpi .kr b{font-size:13.5px;color:#132238;font-weight:700}
     /* top lists: row sizes and spacing are set in Python to fill the panel */
     div[data-baseweb="tab-list"]{gap:0}
-    button[data-baseweb="tab"]{padding:2px 16px;height:32px;font-size:13.5px;font-weight:600}
+    button[data-baseweb="tab"]{padding:2px 10px;height:32px;font-size:13.5px;font-weight:600}
     div[data-baseweb="tab-panel"]{padding-top:.4rem}
     .cap{font-size:11px;color:#5b6b7f;margin:0 0 6px;line-height:1.35}
     .lw{box-sizing:content-box}
@@ -1105,7 +1110,7 @@ def main():
     .lrow .lt{font-size:13px;font-weight:700;color:#132238;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
     .lrow .lt.wrap{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.2}
     .lrow .ls{font-size:11px;color:#4f6075;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
-    .lrow .pls{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
+    .lrow .pls{display:flex;flex-wrap:nowrap;gap:3px;margin-top:2px;overflow:hidden}
     .lrow .pl{background:#eef3fb;color:#26456e;border-radius:999px;padding:0 7px;font-size:10.5px;line-height:1.55;white-space:nowrap}
     .lrow .pl i{font-style:normal;color:#6b7f99}
     .lrow .lv{text-align:right;line-height:1.15}
@@ -1116,6 +1121,10 @@ def main():
     .about{background:#f6f8fb;border:1px dashed #b9c6d8;border-radius:8px;padding:8px 10px;font-size:11px;color:#4f6075;line-height:1.45;margin-top:4px}
     .stButton > button{min-height:28px;height:28px;padding:0 6px;font-size:13px;line-height:1;border-radius:7px;border:1px solid #c8d4e3}
     section[data-testid="stSidebar"] .stButton > button{width:100%}
+    /* the small zoom arrows beside each list row */
+    div[data-testid="stColumn"]{min-width:0 !important}
+    div[data-testid="stColumn"] .stButton > button{min-height:24px;height:24px;width:100%;min-width:0;padding:0;font-size:12px}
+    section[data-testid="stSidebar"] div[data-testid="stColumn"] .stButton > button{min-height:28px;height:28px;font-size:13px}
     </style>
     """, unsafe_allow_html=True)
 
@@ -1501,7 +1510,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
         return h, int(min(22, max(4, unit - h)))
 
     list_h = map_h - 42                  # tab bar is about 40 px, so the list box ends level with the map's bottom edge
-    ROW_H, ROW_PAD = 76, 5              # every row in every list has this exact size, so nothing is cut and items line up between tabs
+    ROW_H, ROW_PAD = 64, 5              # every row in every list has this exact size, so nothing is cut and items line up between tabs
     h10 = h5 = ROW_H
     p10 = p5 = ROW_PAD
 
@@ -1510,7 +1519,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
     panel = rail_col.container()
     with panel:
         need_short = {1: "Tier 1", 2: "Tier 2", 3: "Tier 3"}
-        lists = st.tabs(["Tracts", "Stops", "Routes"])
+        lists = st.tabs(["Priority tracts", "Priority stops", "Priority routes"])
 
         # ---- Top tracts: highest equity score ----
         with lists[0], scroll_box():
@@ -1523,7 +1532,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                 a_.markdown(row_html(
                     i, f"{U} {row['GEOID']}",
                     [f"{row['pop']:,.0f} residents"],
-                    f"{row['equity_score']:.1f}", "equity score", bar=row["equity_score"], height=h10, pad=p10, wrap_title=True,
+                    f"{row['equity_score']:.1f}", "equity score", bar=row["equity_score"], height=h10, pad=p10, 
                     hint=f"{U} {row['GEOID']}: equity score {row['equity_score']:.1f}, {row['pop']:,.0f} residents, nearest {scope} "
                          f"{fmt_dist(row['near_m'])}, {_pct(row['cover_any'] * 100)} of the {unit} within a quarter mile of a stop."),
                     unsafe_allow_html=True)
@@ -1550,7 +1559,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                 a_, b_ = st.columns([11, 1.4], gap="small")
                 a_.markdown(row_html(
                     i, esc(name), [f"Stop {esc(sid)} · routes {esc(row['routes'])}"],
-                    f"{row['worst']:.1f} min", "longer peak wait", height=h5, pad=p5, wrap_title=True,
+                    f"{row['worst']:.1f} min", "longer peak wait", height=h5, pad=p5, 
                     chips=pills([("AM", f"{_pk(row['am'])} min"), ("PM", f"{_pk(row['pm'])} min")]),
                     hint=f"{name} ({sid}): AM peak {_peak(row['am'])}, PM peak {_peak(row['pm'])}, {row['boardings']:,.0f} boardings, "
                          f"routes {row['routes']}, {need}."), unsafe_allow_html=True)
@@ -1582,7 +1591,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                 a_, b_ = st.columns([11, 1.4], gap="small")
                 a_.markdown(row_html(
                     i, f"Route {esc(str(rid_top))}", [f"{trips_r.get(rid_top, 0):,.0f} scheduled trips on this date"],
-                    f"{value:,.0f}", "boardings", bar=share * 100, height=h5, pad=p5, wrap_title=True,
+                    f"{value:,.0f}", "boardings", bar=share * 100, height=h5, pad=p5, 
                     chips=pills([("AM", f"{_pk(am_r)} min"), ("PM", f"{_pk(pm_r)} min")]),
                     hint=f"Route {rid_top}: {value:,.0f} boardings, {share:.0%} at stops in the highest-need third, "
                          f"{trips_r.get(rid_top, 0):,.0f} scheduled trips, AM peak wait {_peak(am_r)}, PM peak wait {_peak(pm_r)}."),
