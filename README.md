@@ -1,22 +1,17 @@
 # Brooklyn Bus Equity Explorer
 
-An interactive Streamlit work sample for the Brooklyn Bus Network Redesign. It combines daily bus stop ridership, GTFS schedule data, Brooklyn census geography, ACS equity measures, and a local light basemap.
+An interactive tool for exploring Brooklyn bus service through an equity lens. Choose a date, route, direction or stop to see scheduled service, ridership and typical wait times on the map, alongside neighborhood need indicators and ranked lists of priority tracts, stops and routes. It follows the approach of equity-focused service reviews such as Title VI analysis, as an exploratory view of who is reached by service and who is not.
 
 ## Run locally
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-streamlit run app1.py
-```
+    pip install -r requirements.txt
+    streamlit run app1.py
 
-The app uses the daily ridership and schedule Parquet files in the repository. The basemap tiles are local PNG tiles under `static/tiles`; no external map-tile API key is required.
+## Data and attribution
 
-## Deploy with Streamlit Community Cloud
+- Bus schedules: GTFS feed from the [Mobility Database](https://mobilitydatabase.org/feeds/gtfs/mdb-520), originally published by the MTA.
+- Bus ridership: public data published by the MTA.
+- Neighborhood demographics: U.S. Census Bureau, American Community Survey 5-year estimates.
+- Basemap: map data © OpenStreetMap contributors (ODbL).
 
-Create a Streamlit app from this repository, use the `main` branch, and set the main file to `app1.py`. Use Python 3.11 or 3.12.
-
-## Data notes
-
-The repository contains processed application data only. Raw PBF, GeoPackage, ZIP, and source GTFS archives are intentionally excluded.
+*This is my personal analysis of publicly available data, built to explore how transit service lines up with neighborhood need.*
