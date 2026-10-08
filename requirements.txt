@@ -1,0 +1,8 @@
+streamlit>=1.40
+streamlit-folium
+streamlit-js-eval
+folium
+pandas
+numpy
+scipy
+pyarrow
