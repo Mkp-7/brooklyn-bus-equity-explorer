@@ -1482,8 +1482,18 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
         "stops": stop_rows if show_stops else [],
     }
     map_col, rail_col = st.columns([1.8, 1], gap="small")
+    st.markdown("""
+    <style>
+    div[data-testid="stElementContainer"]:has(
+        iframe[title*="brooklyn_map"]
+    ) {
+        margin-top: -116px !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    map_col, rail_col = st.columns([1.8, 1], gap="small")
     with map_col:
-        st.markdown("<div style='margin-top:-116px'></div>", unsafe_allow_html=True)
         _MAP(payload=payload, key="map", default=None)
 
     GAP0 = 6                               # space Streamlit puts between stacked elements
