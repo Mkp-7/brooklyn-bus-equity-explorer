@@ -1046,10 +1046,16 @@ def main():
        so that pull made the banner, the list descriptions and the sidebar headings overlap what follows them. */
     [data-testid="stMarkdownContainer"]{margin-bottom:0 !important}
     div[data-testid="stVerticalBlock"]{gap:6px}
-    div[data-testid="stHorizontalBlock"]:has(.lrow),div[data-testid="stHorizontalBlock"]:has(.banner){align-items:center}
+    /* centre the content of each list row and the banner, but never the outer map/list row (that pushed the map down by half
+       the height difference with the lists, so the map moved over the KPIs whenever the lists got shorter) */
+    div[data-testid="stHorizontalBlock"]:has(.lrow):not(:has(div[data-testid="stHorizontalBlock"])),
+    div[data-testid="stHorizontalBlock"]:has(.banner){align-items:center}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stHorizontalBlock"]){align-items:flex-start}
     /* sidebar: category titles, then control titles, are larger than the values inside the controls */
     section[data-testid="stSidebar"]{width:260px !important;min-width:260px !important;background:#eef3f9}
-    section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"]{padding:.6rem .85rem !important}
+    /* sidebar content starts at the same height as the title banner (the page padding above is 2.1rem) */
+    section[data-testid="stSidebar"] [data-testid="stSidebarHeader"]{height:2.1rem !important;min-height:2.1rem !important;padding:0 .5rem !important}
+    section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"]{padding:0 .85rem .6rem .85rem !important}
     section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"]{gap:8px}
     section[data-testid="stSidebar"] [data-testid="stWidgetLabel"]{min-height:0;margin-bottom:2px}
     section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p{font-size:14px !important;font-weight:700 !important;color:#16335c !important}
@@ -1463,7 +1469,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
     # ---------- measure the browser window, so the map and the lists fill exactly the space that is left ----------
     # Keep the map compact enough that the ranking rail is visible on a normal
     # desktop viewport. The rail is allowed to grow instead of clipping cards.
-    map_h = 560
+    map_h = 500
 
     # ---------- the map (left) and the top lists (right), both map_h tall ----------
     # The map is a component that keeps its basemap and view and swaps only the three data layers, so a new date, route or
@@ -1481,15 +1487,6 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
         "routes": route_rows if show_routes else [],
         "stops": stop_rows if show_stops else [],
     }
-    st.markdown("""
-    <style>
-    div[data-testid="stElementContainer"]:has(
-        iframe[title*="brooklyn_map"]
-    ) {
-        margin-top: -300px !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
     
     map_col, rail_col = st.columns([1.8, 1], gap="small")
     with map_col:
@@ -1503,16 +1500,19 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
         h = int(min(max_h, max(min_h, unit - 8)))
         return h, int(min(22, max(4, unit - h)))
 
-    overhead = 32 + 46 + 48 + 12
-    h10, p10 = 68, 5
-    h5, p5 = 82, 5
+    list_h = map_h - 42                  # tab bar is about 40 px, so the list box ends level with the map's bottom edge
+    h10, p10 = 46, 5
+    h5, p5 = 66, 5
+
+    def scroll_box():
+        return st.container(height=list_h, border=False)
     panel = rail_col.container()
     with panel:
         need_short = {1: "Tier 1", 2: "Tier 2", 3: "Tier 3"}
         lists = st.tabs(["Tracts", "Stops", "Routes"])
 
         # ---- Top tracts: highest equity score ----
-        with lists[0]:
+        with lists[0], scroll_box():
             st.markdown(f"<div class='cap'>Highest equity score, {MIN_TRACT_POP:,}+ residents. Ranking is fixed; nearest-stop distance follows your filters.</div>", unsafe_allow_html=True)
             tbl = t[t["equity_score"].notna() & (t["pop"] >= MIN_TRACT_POP)].sort_values("equity_score", ascending=False).head(TOP_TRACTS)
             if tbl.empty:
@@ -1521,8 +1521,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                 a_, b_ = st.columns([11, 1.4], gap="small")
                 a_.markdown(row_html(
                     i, f"{U} {row['GEOID']}",
-                    [f"{row['pop']:,.0f} residents · nearest stop {fmt_dist(row['near_m'])}",
-                     f"{_pct(row['cover_any'] * 100)} within ¼ mi of a stop · minority {_pct(row['minority_pct'])} · poverty {_pct(row['poverty_pct'])}"],
+                    [],
                     f"{row['equity_score']:.1f}", "equity score", bar=row["equity_score"], height=h10, pad=p10,
                     hint=f"{U} {row['GEOID']}: equity score {row['equity_score']:.1f}, {row['pop']:,.0f} residents, nearest {scope} "
                          f"{fmt_dist(row['near_m'])}, {_pct(row['cover_any'] * 100)} of the {unit} within a quarter mile of a stop."),
@@ -1531,7 +1530,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                           args=(row["GEOID"], float(row["lat"]), float(row["lon"])))
 
         # ---- Top stops: longest wait at the worse of the two peaks ----
-        with lists[1]:
+        with lists[1], scroll_box():
             st.markdown(f"<div class='cap'>Longest wait at the worse peak, stops with {MIN_STOP_BOARDINGS}+ boardings. Shortest wait among a stop's routes. Follows route and direction.</div>",
                         unsafe_allow_html=True)
             by_stop = svc_rd.groupby("stop_id").agg(am=("am_wait_min", "min"), pm=("pm_wait_min", "min"),
@@ -1551,8 +1550,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                 a_.markdown(row_html(
                     i, esc(name), [f"Stop {esc(sid)} · routes {esc(row['routes'])}"],
                     f"{row['worst']:.1f} min", "longer peak wait", height=h5, pad=p5, wrap_title=True,
-                    chips=pills([("AM", f"{_pk(row['am'])} min"), ("PM", f"{_pk(row['pm'])} min"),
-                                 ("", f"{row['boardings']:,.0f} boardings"), ("", need)]),
+                    chips=pills([("AM", f"{_pk(row['am'])} min"), ("PM", f"{_pk(row['pm'])} min")]),
                     hint=f"{name} ({sid}): AM peak {_peak(row['am'])}, PM peak {_peak(row['pm'])}, {row['boardings']:,.0f} boardings, "
                          f"routes {row['routes']}, {need}."), unsafe_allow_html=True)
                 q = stops_tbl.loc[sid]
@@ -1564,7 +1562,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                         unsafe_allow_html=True)
 
         # ---- Top routes: boardings, with the equity lens ----
-        with lists[2]:
+        with lists[2], scroll_box():
             st.markdown("<div class='cap'>Most boardings that day, both directions unless one is chosen. Ignores the route filter.</div>", unsafe_allow_html=True)
             rid_dir = rid if direction == "All directions" else rid[rid["direction"] == direction]
             have_dir = direction != "All directions"
@@ -1584,7 +1582,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                 a_.markdown(row_html(
                     i, f"Route {esc(str(rid_top))}", [f"{trips_r.get(rid_top, 0):,.0f} scheduled trips on this date"],
                     f"{value:,.0f}", "boardings", bar=share * 100, height=h5, pad=p5,
-                    chips=pills([("AM", f"{_pk(am_r)} min"), ("PM", f"{_pk(pm_r)} min"), ("", f"{share:.0%} at high-need stops")]),
+                    chips=pills([("AM", f"{_pk(am_r)} min"), ("PM", f"{_pk(pm_r)} min")]),
                     hint=f"Route {rid_top}: {value:,.0f} boardings, {share:.0%} at stops in the highest-need third, "
                          f"{trips_r.get(rid_top, 0):,.0f} scheduled trips, AM peak wait {_peak(am_r)}, PM peak wait {_peak(pm_r)}."),
                     unsafe_allow_html=True)
