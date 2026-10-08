@@ -106,7 +106,7 @@ EXPECT = {
 # The tiles sit in the static/tiles folder and Streamlit serves them itself (.streamlit/config.toml turns that on), so the map
 # uses no tile service and no API key, and the page stays small because the tiles load separately and are cached by the browser.
 TILE_DIR = ROOT / "static" / "tiles"
-TILE_URL = "https://cdn.jsdelivr.net/gh/<you>/<repo>@main/static/tiles/{z}/{x}/{y}.png"
+TILE_URL = "https://mkp-7.github.io/brooklyn-bus-equity-explorer/static/tiles/{z}/{x}/{y}.png"
 TILE_ZOOM = (10, 16)                 # zooms that were drawn; closer views enlarge the last one
 TILES = {"Light": TILE_URL, "None": None}
 TILE_ATTR = "&copy; OpenStreetMap contributors"
