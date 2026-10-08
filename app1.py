@@ -1504,7 +1504,7 @@ For buses every h minutes it is h / 2. A stop takes the shortest wait among its 
         h = int(min(max_h, max(min_h, unit - 8)))
         return h, int(min(22, max(4, unit - h)))
 
-    list_h = map_h - 42                  # tab bar is about 40 px, so the list box ends level with the map's bottom edge
+    list_h = map_h - 50                  # tab bar is about 40 px, so the list box ends level with the map's bottom edge
     ROW_H, ROW_PAD = 64, 5              # every row in every list has this exact size, so nothing is cut and items line up between tabs
     h10 = h5 = ROW_H
     p10 = p5 = ROW_PAD
