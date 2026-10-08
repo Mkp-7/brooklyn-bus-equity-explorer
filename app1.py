@@ -1082,15 +1082,15 @@ def main():
     .banner .bchip.day{background:#fff;color:#0039A6;border-color:#fff}
     div[data-testid="stPopover"] button{height:38px;border-radius:9px;border:1px solid #c8d4e3;background:#fff;color:#0039A6;font-weight:700}
     /* KPI strip: single values and stacked pairs */
-    .kpis{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+    .kpis{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2px}
     .kpi{flex:1 1 120px;min-width:112px;background:#fff;border:1px solid #d8e0ec;border-top:3px solid var(--c,#0039A6);
-         border-radius:8px;padding:5px 10px 6px;display:flex;flex-direction:column;justify-content:center}
+         border-radius:8px;padding:3px 10px 4px;display:flex;flex-direction:column;justify-content:center}
     .kpi.stack{flex:1.15 1 140px}
-    .kpi .kt{font-size:10.5px;font-weight:700;color:#5b6b7f;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .kpi .kv{font-size:21px;line-height:1.15;font-weight:700;color:#132238}
+    .kpi .kt{font-size:10.5px;font-weight:700;color:#5b6b7f;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .kpi .kv{font-size:18px;line-height:1.1;font-weight:700;color:#132238}
     .kpi .kr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;line-height:1.3}
     .kpi .kr span{font-size:11px;color:#5b6b7f}
-    .kpi .kr b{font-size:15px;color:#132238;font-weight:700}
+    .kpi .kr b{font-size:13.5px;color:#132238;font-weight:700}
     /* top lists: row sizes and spacing are set in Python to fill the panel */
     div[data-baseweb="tab-list"]{gap:0}
     button[data-baseweb="tab"]{padding:2px 16px;height:32px;font-size:13.5px;font-weight:600}
@@ -1102,7 +1102,7 @@ def main():
     .lrow .rk{width:21px;height:21px;border-radius:50%;background:#0039A6;color:#fff;font-size:11px;font-weight:700;
               display:flex;align-items:center;justify-content:center}
     .lrow .lm{min-width:0;overflow:visible}
-    .lrow .lt{font-size:13px;font-weight:700;color:#132238;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .lrow .lt{font-size:13px;font-weight:700;color:#132238;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
     .lrow .lt.wrap{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.2}
     .lrow .ls{font-size:11px;color:#4f6075;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
     .lrow .pls{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
@@ -1469,7 +1469,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
     # ---------- measure the browser window, so the map and the lists fill exactly the space that is left ----------
     # Keep the map compact enough that the ranking rail is visible on a normal
     # desktop viewport. The rail is allowed to grow instead of clipping cards.
-    map_h = 500
+    map_h = 480
 
     # ---------- the map (left) and the top lists (right), both map_h tall ----------
     # The map is a component that keeps its basemap and view and swaps only the three data layers, so a new date, route or
@@ -1501,8 +1501,9 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
         return h, int(min(22, max(4, unit - h)))
 
     list_h = map_h - 42                  # tab bar is about 40 px, so the list box ends level with the map's bottom edge
-    h10, p10 = 46, 5
-    h5, p5 = 66, 5
+    ROW_H, ROW_PAD = 76, 5              # every row in every list has this exact size, so nothing is cut and items line up between tabs
+    h10 = h5 = ROW_H
+    p10 = p5 = ROW_PAD
 
     def scroll_box():
         return st.container(height=list_h, border=False)
@@ -1521,8 +1522,8 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                 a_, b_ = st.columns([11, 1.4], gap="small")
                 a_.markdown(row_html(
                     i, f"{U} {row['GEOID']}",
-                    [],
-                    f"{row['equity_score']:.1f}", "equity score", bar=row["equity_score"], height=h10, pad=p10,
+                    [f"{row['pop']:,.0f} residents"],
+                    f"{row['equity_score']:.1f}", "equity score", bar=row["equity_score"], height=h10, pad=p10, wrap_title=True,
                     hint=f"{U} {row['GEOID']}: equity score {row['equity_score']:.1f}, {row['pop']:,.0f} residents, nearest {scope} "
                          f"{fmt_dist(row['near_m'])}, {_pct(row['cover_any'] * 100)} of the {unit} within a quarter mile of a stop."),
                     unsafe_allow_html=True)
@@ -1581,7 +1582,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
                 a_, b_ = st.columns([11, 1.4], gap="small")
                 a_.markdown(row_html(
                     i, f"Route {esc(str(rid_top))}", [f"{trips_r.get(rid_top, 0):,.0f} scheduled trips on this date"],
-                    f"{value:,.0f}", "boardings", bar=share * 100, height=h5, pad=p5,
+                    f"{value:,.0f}", "boardings", bar=share * 100, height=h5, pad=p5, wrap_title=True,
                     chips=pills([("AM", f"{_pk(am_r)} min"), ("PM", f"{_pk(pm_r)} min")]),
                     hint=f"Route {rid_top}: {value:,.0f} boardings, {share:.0%} at stops in the highest-need third, "
                          f"{trips_r.get(rid_top, 0):,.0f} scheduled trips, AM peak wait {_peak(am_r)}, PM peak wait {_peak(pm_r)}."),
