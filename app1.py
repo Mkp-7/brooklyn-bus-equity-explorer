@@ -1514,7 +1514,7 @@ For buses every h minutes it is h / 2. A stop takes the shortest wait among its 
     panel = rail_col.container()
     with panel:
         need_short = {1: "Tier 1", 2: "Tier 2", 3: "Tier 3"}
-        lists = st.tabs(["Priority tracts", "Priority stops", "Priority routes"])
+        lists = st.tabs(["Priority Tracts", "Priority Stops", "Priority Routes"])
 
         # ---- Top tracts: highest equity score ----
         with lists[0], scroll_box():
