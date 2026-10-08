@@ -1419,11 +1419,6 @@ It is shown separately for the AM peak ({AM_START // 3600} to {AM_END // 3600} A
 the route and stop tooltips. Only the time between two scheduled departures counts, so hours before the first bus or after the last do not.
 For buses every h minutes it is h / 2. A stop takes the shortest wait among its routes, and a selection shows the median across its stops.
 
-**Tooltips.** Hovering over a tract, route or stop shows its details in a tooltip that follows the pointer. Clicking opens the same details in a
-popup that stays open until you click another feature (it then shows that one) or an empty part of the map. While a popup is open, hovering over other
-features shows nothing. Clicking does not rerun the app or redraw the map.
-The nearest stop is the straight-line distance from the {unit}'s center to the nearest stop in the current selection.
-
 **Limits.**
 - Brooklyn routes are chosen by route name. Some Q and X routes that serve Brooklyn are not counted as Brooklyn.
 - Schedules are scheduled service. They do not show late or cancelled buses.
