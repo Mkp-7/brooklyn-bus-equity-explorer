@@ -1487,7 +1487,7 @@ The nearest stop is the straight-line distance from the {unit}'s center to the n
     div[data-testid="stElementContainer"]:has(
         iframe[title*="brooklyn_map"]
     ) {
-        margin-top: -350px !important;
+        margin-top: -300px !important;
     }
     </style>
     """, unsafe_allow_html=True)
