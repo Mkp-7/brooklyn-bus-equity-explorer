@@ -1,0 +1,163 @@
+{
+  "gtfs_root": "Jun to Sep GTFS",
+  "feeds": [
+    "Jun to Sep GTFS\\gtfs_b",
+    "Jun to Sep GTFS\\gtfs_busco",
+    "Jun to Sep GTFS\\gtfs_bx",
+    "Jun to Sep GTFS\\gtfs_m",
+    "Jun to Sep GTFS\\gtfs_q",
+    "Jun to Sep GTFS\\gtfs_si"
+  ],
+  "patterns": {
+    "pattern_01": {
+      "dates": [
+        "2026-08-01",
+        "2026-08-08",
+        "2026-08-15",
+        "2026-08-22",
+        "2026-08-29"
+      ],
+      "weekday_names": [
+        "Saturday"
+      ],
+      "service_rows": 5657,
+      "routes": 67,
+      "stops": 4413
+    },
+    "pattern_02": {
+      "dates": [
+        "2026-08-02",
+        "2026-08-09",
+        "2026-08-16"
+      ],
+      "weekday_names": [
+        "Sunday"
+      ],
+      "service_rows": 5265,
+      "routes": 62,
+      "stops": 4326
+    },
+    "pattern_03": {
+      "dates": [
+        "2026-08-03",
+        "2026-08-04",
+        "2026-08-05",
+        "2026-08-06",
+        "2026-08-10",
+        "2026-08-11",
+        "2026-08-12",
+        "2026-08-13",
+        "2026-08-17",
+        "2026-08-18"
+      ],
+      "weekday_names": [
+        "Monday",
+        "Thursday",
+        "Tuesday",
+        "Wednesday"
+      ],
+      "service_rows": 6240,
+      "routes": 75,
+      "stops": 4532
+    },
+    "pattern_04": {
+      "dates": [
+        "2026-08-07",
+        "2026-08-14"
+      ],
+      "weekday_names": [
+        "Friday"
+      ],
+      "service_rows": 6240,
+      "routes": 75,
+      "stops": 4532
+    },
+    "pattern_05": {
+      "dates": [
+        "2026-08-19"
+      ],
+      "weekday_names": [
+        "Wednesday"
+      ],
+      "service_rows": 6240,
+      "routes": 75,
+      "stops": 4532
+    },
+    "pattern_06": {
+      "dates": [
+        "2026-08-20",
+        "2026-08-24",
+        "2026-08-25",
+        "2026-08-26",
+        "2026-08-27",
+        "2026-08-31"
+      ],
+      "weekday_names": [
+        "Monday",
+        "Thursday",
+        "Tuesday",
+        "Wednesday"
+      ],
+      "service_rows": 6240,
+      "routes": 75,
+      "stops": 4532
+    },
+    "pattern_07": {
+      "dates": [
+        "2026-08-21",
+        "2026-08-28"
+      ],
+      "weekday_names": [
+        "Friday"
+      ],
+      "service_rows": 6240,
+      "routes": 75,
+      "stops": 4532
+    },
+    "pattern_08": {
+      "dates": [
+        "2026-08-23",
+        "2026-08-30"
+      ],
+      "weekday_names": [
+        "Sunday"
+      ],
+      "service_rows": 5265,
+      "routes": 62,
+      "stops": 4326
+    }
+  },
+  "dates": {
+    "2026-08-01": "pattern_01",
+    "2026-08-08": "pattern_01",
+    "2026-08-15": "pattern_01",
+    "2026-08-22": "pattern_01",
+    "2026-08-29": "pattern_01",
+    "2026-08-02": "pattern_02",
+    "2026-08-09": "pattern_02",
+    "2026-08-16": "pattern_02",
+    "2026-08-03": "pattern_03",
+    "2026-08-04": "pattern_03",
+    "2026-08-05": "pattern_03",
+    "2026-08-06": "pattern_03",
+    "2026-08-10": "pattern_03",
+    "2026-08-11": "pattern_03",
+    "2026-08-12": "pattern_03",
+    "2026-08-13": "pattern_03",
+    "2026-08-17": "pattern_03",
+    "2026-08-18": "pattern_03",
+    "2026-08-07": "pattern_04",
+    "2026-08-14": "pattern_04",
+    "2026-08-19": "pattern_05",
+    "2026-08-20": "pattern_06",
+    "2026-08-24": "pattern_06",
+    "2026-08-25": "pattern_06",
+    "2026-08-26": "pattern_06",
+    "2026-08-27": "pattern_06",
+    "2026-08-31": "pattern_06",
+    "2026-08-21": "pattern_07",
+    "2026-08-28": "pattern_07",
+    "2026-08-23": "pattern_08",
+    "2026-08-30": "pattern_08"
+  }
+}

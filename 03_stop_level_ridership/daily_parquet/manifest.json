@@ -1,0 +1,165 @@
+{
+  "source": "03_stop_level_ridership\\mta_bus_stop_level_ridership_full.csv",
+  "period": "2026-08-01 to 2026-08-31",
+  "routes": "the listed Brooklyn routes (app1.BROOKLYN_ROUTES)",
+  "rows_read": 4403870,
+  "rows_kept": 2022562,
+  "days_written": [
+    {
+      "date": "2026-08-01",
+      "rows": 4650,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-01\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-02",
+      "rows": 4701,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-02\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-03",
+      "rows": 5435,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-03\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-04",
+      "rows": 6064,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-04\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-05",
+      "rows": 5930,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-05\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-06",
+      "rows": 6041,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-06\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-07",
+      "rows": 5993,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-07\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-08",
+      "rows": 5424,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-08\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-09",
+      "rows": 5071,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-09\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-10",
+      "rows": 6064,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-10\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-11",
+      "rows": 6059,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-11\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-12",
+      "rows": 6076,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-12\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-13",
+      "rows": 5992,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-13\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-14",
+      "rows": 488,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-14\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-15",
+      "rows": 4644,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-15\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-16",
+      "rows": 4708,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-16\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-17",
+      "rows": 4949,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-17\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-18",
+      "rows": 4947,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-18\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-19",
+      "rows": 4905,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-19\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-20",
+      "rows": 4934,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-20\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-21",
+      "rows": 4937,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-21\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-22",
+      "rows": 4647,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-22\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-23",
+      "rows": 4624,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-23\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-24",
+      "rows": 4952,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-24\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-25",
+      "rows": 4830,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-25\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-26",
+      "rows": 4943,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-26\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-27",
+      "rows": 4929,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-27\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-28",
+      "rows": 4925,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-28\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-29",
+      "rows": 4722,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-29\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-30",
+      "rows": 4640,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-30\\ridership.parquet"
+    },
+    {
+      "date": "2026-08-31",
+      "rows": 4856,
+      "file": "03_stop_level_ridership\\daily_parquet\\2026-08-31\\ridership.parquet"
+    }
+  ],
+  "universe_rows": 6194
+}
